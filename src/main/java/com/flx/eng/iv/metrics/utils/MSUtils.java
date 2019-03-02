@@ -1,7 +1,5 @@
 package com.flx.eng.iv.metrics.utils;
 
-import java.util.Arrays;
-
 import com.flx.eng.iv.metrics.request.CreateMetericRequest;
 
 public class MSUtils {

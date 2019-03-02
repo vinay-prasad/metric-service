@@ -2,6 +2,8 @@ package com.flx.eng.iv.metrics.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,13 @@ import com.flx.eng.iv.metrics.utils.MSUtils;
 @RestController
 public class MetricController {
 
+	private final static Logger LOG = LoggerFactory.getLogger(MetricController.class);
 	@Autowired
 	private IMetricService metricService;
 
-	@RequestMapping("metrics")
+	@RequestMapping(method = RequestMethod.GET, value = "metrics")
 	public ResponseEntity<Object> getMetrics() {
+		LOG.info("/metrics");
 		Response body;
 		try {
 			List<Metric> metrics = metricService.getMetrics();
@@ -38,8 +42,9 @@ public class MetricController {
 		}
 	}
 
-	@RequestMapping("metrics/{metric}")
+	@RequestMapping(method = RequestMethod.GET, value = "metrics/{metric}")
 	public ResponseEntity<Object> getMetrics(@PathVariable String metric) {
+		LOG.info("/metric/{metric}");
 		Response body;
 		try {
 			List<Metric> metrics = metricService.getMetrics(metric);
@@ -50,8 +55,9 @@ public class MetricController {
 		}
 	}
 
-	@RequestMapping("metrics/statistics/{metric}")
+	@RequestMapping(method = RequestMethod.GET, value = "metrics/statistics/{metric}")
 	public ResponseEntity<Object> getStatistics(@PathVariable String metric) {
+		LOG.info("metrics/statistics/{metric}");
 		Response body;
 		try {
 			Statistics stats = metricService.getStatistics(metric);
@@ -66,10 +72,10 @@ public class MetricController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/metrics")
 	public ResponseEntity<Response> createMetric(@RequestBody CreateMetericRequest req) {
+		LOG.info("/metrics");
 		Response body;
 		try {
-			MSUtils.validateCreateMetricRequest(req);
-			metricService.addMetric(req.getMetric(), req.getValues());
+			metricService.addMetric(req);
 			body = new Response(MSConstants.SUCCESS, null);
 			return new ResponseEntity<Response>(body, HttpStatus.OK);
 		} catch (MSException ex) {
@@ -83,7 +89,7 @@ public class MetricController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/metrics/{metric}/{value}")
 	public ResponseEntity<Response> createMetric(@PathVariable String metric, @PathVariable float value) {
-
+		LOG.info("/metrics/{metric}/{value}");
 		Response body;
 		try {
 			MSUtils.validateCreateMetricRequest(metric, value);
