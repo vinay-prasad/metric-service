@@ -6,30 +6,50 @@ This project has 5 APIs to perform various operations
 ````
 GET Metrics - Returns all the metrics from the db 
 localhost:8080/metrics
+
+Space Complexity : O(n) - space for n records
+Time Complexity : O(n) - visiting n records
 ````
+
 
 ````
 GET Metrics by metric-name - Returns all the metrics from the db for given metric-name
 localhost:8080/metrics/{metric}
+
+Space Complexity : O(n) - space for (n-x ~n) records where n is total records and x is records for metric-name
+Time Complexity : O(n) - visiting (n-x ~n) records
+
+
 ````
 
 ````
-POST Metrics - Create Metrics with given request containing metric name and deciamal values
+POST Metrics - Create Metrics with given request containing metric name and decimal values
 localhost:8080/metrics
 {
         "metric": "Facebook",
         "values": [1.1, 1, 1.3, 3.6, -3.2]
 }
+
+Space Complexity : O(n) - space for n records
+Time Complexity : O(n) - visiting n records
 ````
 
 ````
 POST Metrics - Add a value to Metric. Creates a new metric if the metric does not exist already.
 localhost:8080/metrics/{metric}/{value}
+
+Space Complexity : O(1) - space for only one record
+Time Complexity : O(1) - visiting only one record
+
 ````
 
 ````
 GET Statistics - Returns summary of statistics including min, max, mean and median for given metric-name
 localhost:8080/metrics/statistics/{metric}
+
+Space Complexity : O(n) - space for n records
+Time Complexity : O(nLogn) - sorting (nlogn) followed by visiting n records(Min : O(1), Max O(1), Mean O(n), Median O(1)).
+
 ````
 
 ## Build and Execution
